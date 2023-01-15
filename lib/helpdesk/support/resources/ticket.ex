@@ -1,6 +1,7 @@
 defmodule Helpdesk.Support.Ticket do
   # This turns this module into a resource
-  use Ash.Resource
+  use Ash.Resource,
+    data_layer: Ash.DataLayer.Ets
 
   actions do
     # Add a set of simple actions. You'll customize these later.
