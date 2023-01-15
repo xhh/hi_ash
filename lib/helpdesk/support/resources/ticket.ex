@@ -7,6 +7,15 @@ defmodule Helpdesk.Support.Ticket do
     # Add a set of simple actions. You'll customize these later.
     defaults [:create, :read, :update, :destroy]
 
+    code_interface do
+      define_for Helpdesk.Support
+
+      define :open, args: [:subject]
+      define :close
+      define :reopen
+      define :分配, action: :assign, args: [:representative_id]
+    end
+
     create :open do
       accept [:subject]
     end
@@ -14,6 +23,24 @@ defmodule Helpdesk.Support.Ticket do
     update :close do
       accept []
       change set_attribute(:status, :closed)
+    end
+
+    update :reopen do
+      accept []
+      change set_attribute(:status, :open)
+    end
+
+    update :assign do
+      accept []
+
+      argument :representative_id, :uuid do
+        allow_nil? false
+      end
+
+      # We use a change here to replace the related Representative
+      # If there is a different representative for this Ticket, it will be changed to the new one
+      # The Representative itself is not modified in any way
+      change manage_relationship(:representative_id, :representative, type: :append_and_remove)
     end
   end
 
@@ -32,5 +59,13 @@ defmodule Helpdesk.Support.Ticket do
       default :open
       allow_nil? false
     end
+  end
+
+  relationships do
+    # belongs_to means that the destination attribute is unique, meaning only one related record could exist.
+    # We assume that the destination attribute is `representative_id` based
+    # on the name of this relationship and that the source attribute is `representative_id`.
+    # We create `representative_id` automatically.
+    belongs_to :representative, Helpdesk.Support.Representative
   end
 end
