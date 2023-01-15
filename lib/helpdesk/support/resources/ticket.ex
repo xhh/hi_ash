@@ -1,7 +1,8 @@
 defmodule Helpdesk.Support.Ticket do
   # This turns this module into a resource
   use Ash.Resource,
-    data_layer: Ash.DataLayer.Ets
+    # data_layer: Ash.DataLayer.Ets
+    data_layer: AshPostgres.DataLayer
 
   actions do
     # Add a set of simple actions. You'll customize these later.
@@ -67,5 +68,10 @@ defmodule Helpdesk.Support.Ticket do
     # on the name of this relationship and that the source attribute is `representative_id`.
     # We create `representative_id` automatically.
     belongs_to :representative, Helpdesk.Support.Representative
+  end
+
+  postgres do
+    table "tickets"
+    repo Helpdesk.Repo
   end
 end

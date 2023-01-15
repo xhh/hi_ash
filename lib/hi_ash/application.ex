@@ -14,6 +14,7 @@ defmodule HiAsh.Application do
       {Phoenix.PubSub, name: HiAsh.PubSub},
       # Start Finch
       {Finch, name: HiAsh.Finch},
+      Helpdesk.Repo,
       # Start the Endpoint (http/https)
       HiAshWeb.Endpoint
       # Start a worker by calling: HiAsh.Worker.start_link(arg)

@@ -4,11 +4,20 @@
 import IEx.Helpers
 ```
 
-## Section
+## init
 
 ```elixir
-require Ash.Query
+alias Helpdesk.Support
+alias Helpdesk.Support.{Ticket, Representative}
 
+require Ash.Query
+```
+
+<!-- livebook:{"branch_parent_index":0} -->
+
+## Ash.DataLayer.Ets
+
+```elixir
 for i <- 0..5 do
   ticket =
     Helpdesk.Support.Ticket
@@ -24,6 +33,10 @@ end
 ```
 
 ```elixir
+recompile()
+```
+
+```elixir
 Helpdesk.Support.Ticket
 |> Ash.Query.filter(contains(subject, "2"))
 |> Helpdesk.Support.read!()
@@ -36,5 +49,84 @@ Helpdesk.Support.Ticket
 ```
 
 ```elixir
-# Helpdesk.Support.calculate(Helpdesk.Support.Ticket, )
+ticket =
+  Helpdesk.Support.Ticket
+  |> Ash.Changeset.for_create(:open, %{subject: "I can't find my hand!"})
+  |> Helpdesk.Support.create!()
+```
+
+```elixir
+representative =
+  Helpdesk.Support.Representative
+  |> Ash.Changeset.for_create(:create, %{name: "Joe Armstrong"})
+  |> Helpdesk.Support.create!()
+```
+
+```elixir
+ticket
+|> Ash.Changeset.for_update(:assign, %{representative_id: representative.id})
+|> Helpdesk.Support.update!()
+```
+
+```elixir
+recompile()
+```
+
+```elixir
+ticket
+|> Ticket.分配!(representative.id)
+
+# |> Ticket.close!()
+```
+
+<!-- livebook:{"branch_parent_index":0} -->
+
+## AshPostgres.DataLayer
+
+```elixir
+representative =
+  Helpdesk.Support.Representative
+  |> Ash.Changeset.for_create(:create, %{name: "Joe Armstrong"})
+  |> Helpdesk.Support.create!()
+```
+
+```elixir
+for i <- 0..5 do
+  ticket =
+    Helpdesk.Support.Ticket
+    |> Ash.Changeset.for_create(:open, %{subject: "Issue #{i}"})
+    |> Helpdesk.Support.create!()
+    |> Ash.Changeset.for_update(:assign, %{representative_id: representative.id})
+    |> Helpdesk.Support.update!()
+
+  if rem(i, 2) == 0 do
+    ticket
+    |> Ash.Changeset.for_update(:close)
+    |> Helpdesk.Support.update!()
+  end
+end
+```
+
+```elixir
+if true do
+  import Ash.Query
+
+  Representative
+  |> filter(like(name, "Joe %"))
+  |> filter(exists(tickets, contains(subject, "0")))
+  # |> Support.read!()
+  |> data_layer_query()
+  |> case do
+    {:ok, ecto_query} ->
+      # count the ecto query here
+      ecto_query
+      |> Helpdesk.Repo.aggregate(:count)
+      |> case do
+        count -> {:ok, count}
+      end
+
+    {:error, error} ->
+      error
+  end
+end
 ```

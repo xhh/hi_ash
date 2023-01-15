@@ -50,6 +50,7 @@ defmodule HiAsh.MixProject do
       {:plug_cowboy, "~> 2.5"},
       ##########################################################
       {:ash, "~> 2.5"},
+      {:ash_postgres, "~> 1.3"},
       {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]}
     ]
   end
