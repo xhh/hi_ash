@@ -1,0 +1,1 @@
+elixir --sname hi_ash --cookie hi_ash -S mix phx.server

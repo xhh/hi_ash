@@ -51,7 +51,9 @@ defmodule HiAsh.MixProject do
       ##########################################################
       {:ash, "~> 2.5"},
       {:ash_postgres, "~> 1.3"},
-      {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]}
+      {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]},
+      {:yggdrasil, "~> 6.0", override: true},
+      {:yggdrasil_postgres, "~> 5.0"}
     ]
   end
 

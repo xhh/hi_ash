@@ -84,27 +84,27 @@ ticket
 ## AshPostgres.DataLayer
 
 ```elixir
-representative =
-  Helpdesk.Support.Representative
-  |> Ash.Changeset.for_create(:create, %{name: "Joe Armstrong"})
-  |> Helpdesk.Support.create!()
+# representative =
+#   Helpdesk.Support.Representative
+#   |> Ash.Changeset.for_create(:create, %{name: "Joe Armstrong"})
+#   |> Helpdesk.Support.create!()
 ```
 
 ```elixir
-for i <- 0..5 do
-  ticket =
-    Helpdesk.Support.Ticket
-    |> Ash.Changeset.for_create(:open, %{subject: "Issue #{i}"})
-    |> Helpdesk.Support.create!()
-    |> Ash.Changeset.for_update(:assign, %{representative_id: representative.id})
-    |> Helpdesk.Support.update!()
+# for i <- 0..5 do
+#   ticket =
+#     Helpdesk.Support.Ticket
+#     |> Ash.Changeset.for_create(:open, %{subject: "Issue #{i}"})
+#     |> Helpdesk.Support.create!()
+#     |> Ash.Changeset.for_update(:assign, %{representative_id: representative.id})
+#     |> Helpdesk.Support.update!()
 
-  if rem(i, 2) == 0 do
-    ticket
-    |> Ash.Changeset.for_update(:close)
-    |> Helpdesk.Support.update!()
-  end
-end
+#   if rem(i, 2) == 0 do
+#     ticket
+#     |> Ash.Changeset.for_update(:close)
+#     |> Helpdesk.Support.update!()
+#   end
+# end
 ```
 
 ```elixir
@@ -129,4 +129,28 @@ if true do
       error
   end
 end
+```
+
+<!-- livebook:{"branch_parent_index":0} -->
+
+## yggdrasil_postgres
+
+```elixir
+channel = [name: "pg_channel", adapter: :postgres, transformer: :json]
+```
+
+```elixir
+Yggdrasil.subscribe(channel)
+```
+
+```elixir
+:ok = Yggdrasil.publish(channel, %{from: self() |> :erlang.pid_to_list() |> to_string()})
+Process.sleep(100)
+flush()
+```
+
+```elixir
+# Yggdrasil.publish([name: "my_channel"], "message")
+# Yggdrasil.unsubscribe(name: "my_channel")
+flush()
 ```
