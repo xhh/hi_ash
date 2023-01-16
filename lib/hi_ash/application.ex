@@ -16,9 +16,10 @@ defmodule HiAsh.Application do
       {Finch, name: HiAsh.Finch},
       Helpdesk.Repo,
       # Start the Endpoint (http/https)
-      HiAshWeb.Endpoint
+      HiAshWeb.Endpoint,
       # Start a worker by calling: HiAsh.Worker.start_link(arg)
       # {HiAsh.Worker, arg}
+      Subscriber
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

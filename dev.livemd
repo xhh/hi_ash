@@ -136,21 +136,27 @@ end
 ## yggdrasil_postgres
 
 ```elixir
-channel = [name: "pg_channel", adapter: :postgres, transformer: :json]
+# channel = [name: "pg_channel", adapter: :postgres, transformer: :json]
+# Yggdrasil.subscribe(channel)
 ```
 
 ```elixir
-Yggdrasil.subscribe(channel)
+# :ok = Yggdrasil.publish(channel, %{from: self() |> :erlang.pid_to_list() |> to_string()})
+# Process.sleep(100)
+# flush()
 ```
 
 ```elixir
-:ok = Yggdrasil.publish(channel, %{from: self() |> :erlang.pid_to_list() |> to_string()})
-Process.sleep(100)
-flush()
+recompile()
+
+Subscriber
+|> Process.whereis()
+
+# |> Process.exit(:shutdown)
 ```
 
 ```elixir
-# Yggdrasil.publish([name: "my_channel"], "message")
-# Yggdrasil.unsubscribe(name: "my_channel")
-flush()
+:timer.tc(fn ->
+  for i <- 1..1000, do: Subscriber.publish(%{n: i})
+end)
 ```
