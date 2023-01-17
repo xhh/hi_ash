@@ -1,0 +1,100 @@
+# API Helpdesk.Support
+
+## Class Diagram
+
+```mermaid
+classDiagram
+    class Ticket {
+        UUID id
+        String subject
+        Atom status
+        Representative representative
+        destroy()
+        update(UUID id, String subject, Atom status)
+        read()
+        create(UUID id, String subject, Atom status)
+        open(String subject)
+        close()
+        reopen()
+        assign(UUID representative_id)
+    }
+    class Representative {
+        UUID id
+        String name
+        Ticket[] tickets
+        destroy()
+        update(UUID id, String name)
+        read()
+        create(UUID id, String name)
+    }
+
+    Representative -- Ticket
+```
+
+## ER Diagram
+
+```mermaid
+erDiagram
+    Ticket {
+        UUID id
+        String subject
+        Atom status
+    }
+    Representative {
+        UUID id
+        String name
+    }
+
+    Representative ||--|| Ticket : ""
+```
+
+## Resources
+
+* [Ticket](#ticket)
+* [Representative](#representative)
+
+## Ticket
+
+no description
+
+### Attributes
+
+| Name                  | Type   | Description |
+| --------------------- | ------ | ----------- |
+| **id**                | UUID   |             |
+| **subject**           | String |             |
+| **status**            | Atom   |             |
+| **representative_id** | UUID   |             |
+
+### Actions
+
+| Name        | Type      | Input                                                                                                                                        | Description |
+| ----------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| **destroy** | _destroy_ | <ul></ul>                                                                                                                                    |             |
+| **update**  | _update_  | <ul><li><b>id</b> <i>UUID</i> attribute</li><li><b>subject</b> <i>String</i> attribute</li><li><b>status</b> <i>Atom</i> attribute</li></ul> |             |
+| **read**    | _read_    | <ul></ul>                                                                                                                                    |             |
+| **create**  | _create_  | <ul><li><b>id</b> <i>UUID</i> attribute</li><li><b>subject</b> <i>String</i> attribute</li><li><b>status</b> <i>Atom</i> attribute</li></ul> |             |
+| **open**    | _create_  | <ul><li><b>subject</b> <i>String</i> attribute</li></ul>                                                                                     |             |
+| **close**   | _update_  | <ul></ul>                                                                                                                                    |             |
+| **reopen**  | _update_  | <ul></ul>                                                                                                                                    |             |
+| **assign**  | _update_  | <ul><li><b>representative_id</b> <i>UUID</i> </li></ul>                                                                                      |             |
+
+## Representative
+
+no description
+
+### Attributes
+
+| Name     | Type   | Description |
+| -------- | ------ | ----------- |
+| **id**   | UUID   |             |
+| **name** | String |             |
+
+### Actions
+
+| Name        | Type      | Input                                                                                         | Description |
+| ----------- | --------- | --------------------------------------------------------------------------------------------- | ----------- |
+| **destroy** | _destroy_ | <ul></ul>                                                                                     |             |
+| **update**  | _update_  | <ul><li><b>id</b> <i>UUID</i> attribute</li><li><b>name</b> <i>String</i> attribute</li></ul> |             |
+| **read**    | _read_    | <ul></ul>                                                                                     |             |
+| **create**  | _create_  | <ul><li><b>id</b> <i>UUID</i> attribute</li><li><b>name</b> <i>String</i> attribute</li></ul> |             |
