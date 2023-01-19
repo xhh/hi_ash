@@ -31,3 +31,5 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :hi_ash, :type_check, enable_runtime_checks: true

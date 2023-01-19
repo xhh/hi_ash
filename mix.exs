@@ -49,11 +49,18 @@ defmodule HiAsh.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       ##########################################################
+      ## Ash
       {:ash, "~> 2.5"},
       {:ash_postgres, "~> 1.3"},
+      ##
       {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]},
+      ## pubsub
       {:yggdrasil, "~> 6.0", override: true},
-      {:yggdrasil_postgres, "~> 5.0"}
+      {:yggdrasil_postgres, "~> 5.0"},
+      ## type check
+      {:type_check, "~> 0.13"},
+      {:stream_data, "~> 0.5.0"}
+      ##
     ]
   end
 
